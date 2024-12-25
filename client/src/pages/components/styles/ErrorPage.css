@@ -1,0 +1,25 @@
+.error-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.error{
+    display: flex;
+    flex-direction: column;
+    gap: -40px;
+}
+h2{
+    text-align: center;
+}
+.go-btn{
+    text-align: center;
+    background: #240268;
+    width: 150px;
+    height: 30px;
+    margin: auto;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
