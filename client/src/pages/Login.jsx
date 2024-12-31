@@ -1,27 +1,44 @@
-import React, { useState } from 'react'
-
+import React, { useContext, useState } from 'react'
+import {signInWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../firebase-config'
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from './context/AuthContext';
 function Login() {
-  const [userData, setUserData] = useState({
-    
-    email:'',
-    password:''
+ 
+ const[error,setError] = useState(false);
+ const[email,setEmail] = useState("");
+ const[password,setPassword]= useState("");
+
+ const navigate = useNavigate();
+
+ const{ dispatch } = useContext(AuthContext)
+
+ const handleLogin = (e)=>{
+  e.preventDefault();
+
+  signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    dispatch({type:"LOGIN", payload:user})
+    navigate('/app')
   })
-  const changeInputHandler = (e) =>{
-    setUserData(prevState => {
-      return{...prevState, [e.target.name]: e.target.value}
-    })
-  }
+  .catch((error) => {
+    setError(true);
+  });
+
+ }
   return (
     <section className='register'> 
         <div className="register-container">
-          <h2>Login</h2>
-          <form action="" className="form register-form">
-            <p className="form-error-msg red">This is the error message</p>
+          
+          <form onSubmit={handleLogin} className="form register-form">
+          {error && <p className="form-error-msg ">wrong password or email</p>}
            
-            <input type="email" placeholder='Email Address' name='email' value={userData.email} onChange={changeInputHandler} required/>
-            <input type="password" placeholder='Enter your Password' name='password' value={userData.password} onChange={changeInputHandler}/>
+            <input type="email" placeholder='Email Address' name='email' onChange={e=> setEmail(e.target.value)} required/>
+            <input type="password" placeholder='Enter your Password' name='password' onChange={e=> setPassword(e.target.value)}/>
            
-            <button className='category-btn'>Login</button>
+            <button className='category-btn login-btn' >Login</button>
           
           </form>
         </div>

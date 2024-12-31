@@ -8,6 +8,10 @@ import Tool from './components/Tool'
 import Navbar from './components/Navbar'
 import Loader from '../../client/src/pages/components/Loader'
 import Post from './components/Post'
+import React from 'react';
+import Popup from './components/Popup'
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+
 function App() {
   const [posts, setPosts] = useState([]); // State to store fetched data
   const [loading, setLoading] = useState(true); // State to manage loading status
@@ -47,16 +51,17 @@ const post =  posts.map((items)=>
          desc={items.desc} 
         authorID={items.authorID}
          />)
+         const[showPopup,setShowPopup] = useState(false)
   return (
     <>
-      
+      {showPopup && <Popup onClose={()=> setShowPopup(false)}/>}
       <div className="header-cont">
         <Header/>
       </div>
       <div className="main-container">
         <div className="left-container">
           <div className="left-upper-container">
-            <Navbar/>
+            <Navbar showpopup={()=> setShowPopup(true)}/>
           </div>
           <div className="left-lower-container">
             {post}
@@ -67,8 +72,10 @@ const post =  posts.map((items)=>
             <Tool/>
           </div>
           <div className="right-lower-container">
-            <button>
-              <img src={AddIcon} alt="" />  
+           
+            <button onClick={()=> setShowPopup(true)}>
+
+             <Link to='/add-post'> <img src={AddIcon} alt="" />   </Link>
             </button>
           </div>
         </div>
